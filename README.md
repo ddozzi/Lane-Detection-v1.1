@@ -1,9 +1,5 @@
-# Lane-Detection-v1.1
+# Lane-Detection-v1.2
 
-lol nerd shit jk j k jk j k jk j k 
+Lane Detection + Car Detection = Nerd Shit (This project)
 
-dont ocpy codpe plzzzz i work so wahja t for this copde so dont plargise kids plz no. thx kids.
-
-- jayden
-
-
+dont plagurise code plz you can use it whereever you want but dont plagurise.

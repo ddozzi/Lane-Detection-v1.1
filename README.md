@@ -8,8 +8,4 @@ How it works? (Still need to upload car detection video) https://www.youtube.com
 Free to use just don't claim it as your own.
 
 
-
-
-
-results may vary 
--jayden
+If you want to use it click the download code button. and go to terminal and type pip install moviepy

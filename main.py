@@ -7,6 +7,10 @@ import matplotlib.pyplot as plt
 import pickle
 from moviepy.editor import VideoFileClip
 
+'by: Jayden Jeong'
+
+car_cascade = cv2.CascadeClassifier('cars.xml')
+
 def undistort_img():
     # Prepare object points 0,0,0 ... 8,5,0
     obj_pts = np.zeros((6 * 9, 3), np.float32)
@@ -39,7 +43,7 @@ def undistort_img():
     dist_pickle = {}
     dist_pickle['mtx'] = mtx
     dist_pickle['dist'] = dist
-    pickle.dump(dist_pickle, open('camera_cal/cal_pickle.p', 'wb'))
+    pickle.dump(dist_pickle, open('../camera_cal/cal_pickle.p', 'wb'))
 
 
 def undistort(img, cal_dir='camera_cal/cal_pickle.p'):
@@ -284,18 +288,25 @@ def vid_pipeline(img):
     cv2.putText(img, 'Vehicle offset: {:.4f} m'.format(curverad[2]), (570, 650), font, fontSize, fontColor, 2)
     return img
 
-right_curves, left_curves = [], []
+def cardetect(cap):
+    gray = cv2.cvtColor(cap, cv2.COLOR_BGR2GRAY)
+    cars = car_cascade.detectMultiScale(gray, 1.1, 9)
+
+    for (x,y,w,h) in cars:
+        plate = cap[y:y + h, x:x + w]
+        cv2.rectangle(cap,(x,y),(x +w, y +h) ,(51,51,255),2)
+        cv2.rectangle(cap, (x, y - 40), (x + w, y), (51,51,255), -2)
+        cv2.putText(cap, 'Car', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+
+    return cap
+
 
 myclip = VideoFileClip('project_video.mp4')  # .subclip(40,43)
-output_vid = 'output.mp4'
-clip = myclip.fl_image(vid_pipeline)
-clip.write_videofile(output_vid, audio=False)
+output_vid = 'outputF.mp4'
+clip0 = myclip.fl_image(cardetect)
+clip0.write_videofile(output_vid, audio=False)
 
-
-
-
-#lol imagine if this didnt work lmao
-# update: it didnt work
-#update 2: it works now
-# i need 1 more line to say my code is over 300 lines....
-# i have written over 300 lines of code!
+myclip = VideoFileClip('outputF.mp4')  # .subclip(40,43); VideoFileClip converts it to numpy.nparray
+output_vid = 'outputFinal.mp4'
+clip0 = myclip.fl_image(vid_pipeline)
+clip0.write_videofile(output_vid, audio=False)
